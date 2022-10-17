@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -10,6 +11,7 @@ android {
     defaultConfig {
         applicationId = "net.testportal.suitmedia"
         minSdk = 19
+        multiDexEnabled = true
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -34,6 +36,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        dataBinding = true
         viewBinding = true
     }
 }
@@ -46,6 +49,20 @@ dependencies {
 
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
+    implementation(libs.multidex)
+
+    implementation(libs.coil)
+
+    implementation(libs.epoxy)
+    implementation(libs.epoxy.databinding)
+    kapt(libs.epoxy.processor)
+
+    implementation(libs.moshi.kotlin)
+    kapt(libs.moshi.kotlin.codegen)
+
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.converter.moshi)
 
     testImplementation(libs.junit.junit)
 

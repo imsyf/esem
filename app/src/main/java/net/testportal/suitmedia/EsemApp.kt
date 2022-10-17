@@ -1,6 +1,12 @@
 package net.testportal.suitmedia
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
+import net.testportal.suitmedia.data.remote.ReqresinApiClient
+import net.testportal.suitmedia.data.remote.ReqresinApiService
 
-class EsemApp : Application() {
+class EsemApp : MultiDexApplication() {
+
+    val service: ReqresinApiService by lazy {
+        ReqresinApiClient.reqresinApiService
+    }
 }
