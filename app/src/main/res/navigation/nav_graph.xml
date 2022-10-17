@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/firstFragment">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="net.testportal.suitmedia.ui.first.FirstFragment"
+        android:label="@string/first_screen">
+
+        <action
+            android:id="@+id/to_secondFragment"
+            app:destination="@id/secondFragment" />
+
+        <action
+            android:id="@+id/to_palindromeDialogFragment"
+            app:destination="@id/palindromeDialogFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="net.testportal.suitmedia.ui.second.SecondFragment"
+        android:label="@string/second_screen">
+
+        <action
+            android:id="@+id/to_thirdFragment"
+            app:destination="@id/thirdFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/thirdFragment"
+        android:name="net.testportal.suitmedia.ui.third.ThirdFragment"
+        android:label="@string/third_screen" />
+
+    <dialog
+        android:id="@+id/palindromeDialogFragment"
+        android:name="net.testportal.suitmedia.ui.first.PalindromeDialogFragment"
+        android:label="PalindromeDialogFragment" />
+
+</navigation>
