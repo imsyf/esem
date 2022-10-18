@@ -65,6 +65,14 @@ class MainViewModel(
         }
     }
 
+    fun resetPage(): Unit = _state.update {
+        it.copy(
+            users = emptyList(),
+            previousPage = 0,
+            isLastPage = false,
+        )
+    }
+
     private fun toUser(userDto: UserDto): User = User(
         id = userDto.id,
         email = userDto.email,

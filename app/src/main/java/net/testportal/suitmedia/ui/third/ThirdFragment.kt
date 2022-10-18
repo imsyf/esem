@@ -72,4 +72,9 @@ class ThirdFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onDestroy() {
+        viewModel.resetPage()
+        super.onDestroy()
+    }
 }
