@@ -52,7 +52,7 @@ dependencies {
 
     implementation(libs.multidex)
 
-    implementation(libs.coil)
+    implementation(libs.glide)
 
     implementation(libs.epoxy)
     implementation(libs.epoxy.databinding)

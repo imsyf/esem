@@ -5,30 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import net.testportal.suitmedia.data.PalindromeChecker
 import net.testportal.suitmedia.data.remote.ReqresinApiService
+import net.testportal.suitmedia.data.remote.responses.UserDto
 import net.testportal.suitmedia.ui.third.User
 
 class MainViewModel(
+    private val checker: PalindromeChecker,
     private val service: ReqresinApiService,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state
-
-    init {
-        viewModelScope.launch {
-            val response = service.fetchUsers()
-            Log.d("blah", "$response")
-        }
-    }
-
-    fun fetchUsers(page: Int, perPage: Int = 10) {
-        // _state.update { it.copy(isLoading = true) }
-        // viewModelScope.launch {
-        //     service
-        // }
-    }
 
     fun getString(id: Int): String = when (id) {
         1 -> "First Screen"
@@ -37,10 +27,50 @@ class MainViewModel(
         else -> "Palindrome Dialog"
     }
 
+    fun setName(name: String): Unit = _state.update {
+        it.copy(name = name)
+    }
+
+    fun setWord(word: String): Unit = _state.update {
+        val isOrNot = if (checker.isPalindrome(word)) "is" else "is not"
+        it.copy(word = word, output = "\"$word\" $isOrNot a palindrome.")
+    }
+
+    fun setSelected(selected: String): Unit = _state.update {
+        it.copy(selected = selected)
+    }
+
+    fun fetchUsers() {
+        viewModelScope.launch {
+            Log.d("blah", "fetching...")
+
+            try {
+                val response = service.fetchUsers()
+
+                _state.update {
+                    it.copy(users = it.users + response.data.map(::toUser))
+                }
+            } catch (exception: Exception) {
+                Log.d("blah", "${exception.message}")
+            }
+        }
+    }
+
+    private fun toUser(userDto: UserDto): User = User(
+        id = userDto.id,
+        email = userDto.email,
+        name = "${userDto.first_name} ${userDto.last_name}",
+        avatar = userDto.avatar,
+    )
+
     data class State(
+        val name: String = "",
+        val word: String = "",
+        val output: String = "",
+        val selected: String = "Selected User Name",
         val users: List<User> = emptyList(),
-        val isLoading: Boolean = false,
     ) {
-        val isEmpty: Boolean = users.isEmpty()
+        val canNext: Boolean = name.isNotBlank()
+        val canCheck: Boolean = word.isNotBlank()
     }
 }
