@@ -57,6 +57,7 @@ class MainViewModel(
                         users = it.users + response.data.map(::toUser),
                         isLastPage = response.page == response.total_pages,
                         previousPage = response.page,
+                        isRefreshing = false,
                     )
                 }
             } catch (exception: Exception) {
@@ -88,6 +89,7 @@ class MainViewModel(
         val users: List<User> = emptyList(),
         val previousPage: Int = 0,
         val isLastPage: Boolean = false,
+        val isRefreshing: Boolean = false,
     ) {
         val canNext: Boolean = name.isNotBlank()
         val canCheck: Boolean = word.isNotBlank()

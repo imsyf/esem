@@ -36,9 +36,15 @@ class ThirdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.resetPage()
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
+                    binding.swipeToRefresh.isRefreshing = state.isRefreshing
+
                     binding.epoxy.withModels {
                         for (user in state.users) {
                             userCard {

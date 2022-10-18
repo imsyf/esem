@@ -52,6 +52,8 @@ dependencies {
 
     implementation(libs.multidex)
 
+    implementation(libs.swiperefreshlayout)
+
     implementation(libs.glide)
 
     implementation(libs.epoxy)
