@@ -21,13 +21,6 @@ class MainViewModel(
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state
 
-    fun getString(id: Int): String = when (id) {
-        1 -> "First Screen"
-        2 -> "Second Screen"
-        3 -> "Third Screen"
-        else -> "Palindrome Dialog"
-    }
-
     fun setName(name: String): Unit = _state.update {
         it.copy(name = name)
     }
@@ -45,8 +38,6 @@ class MainViewModel(
         if (_state.value.isLastPage) return
 
         viewModelScope.launch {
-            Log.d("blah", "fetching...")
-
             try {
                 val response = service.fetchUsers(
                     page = _state.value.users.size / PER_PAGE + 1,
