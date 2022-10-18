@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import net.testportal.suitmedia.data.PalindromeChecker
+import net.testportal.suitmedia.data.remote.ReqresinApiClient.PER_PAGE
 import net.testportal.suitmedia.data.remote.ReqresinApiService
 import net.testportal.suitmedia.data.remote.responses.UserDto
 import net.testportal.suitmedia.ui.third.User
@@ -40,15 +41,23 @@ class MainViewModel(
         it.copy(selected = selected)
     }
 
-    fun fetchUsers() {
+    fun fetch() {
+        if (_state.value.isLastPage) return
+
         viewModelScope.launch {
             Log.d("blah", "fetching...")
 
             try {
-                val response = service.fetchUsers()
+                val response = service.fetchUsers(
+                    page = _state.value.users.size / PER_PAGE + 1,
+                )
 
                 _state.update {
-                    it.copy(users = it.users + response.data.map(::toUser))
+                    it.copy(
+                        users = it.users + response.data.map(::toUser),
+                        isLastPage = response.page == response.total_pages,
+                        previousPage = response.page,
+                    )
                 }
             } catch (exception: Exception) {
                 Log.d("blah", "${exception.message}")
@@ -69,6 +78,8 @@ class MainViewModel(
         val output: String = "",
         val selected: String = "Selected User Name",
         val users: List<User> = emptyList(),
+        val previousPage: Int = 0,
+        val isLastPage: Boolean = false,
     ) {
         val canNext: Boolean = name.isNotBlank()
         val canCheck: Boolean = word.isNotBlank()

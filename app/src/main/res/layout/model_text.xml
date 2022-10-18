@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="text"
+            type="String" />
+
+    </data>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.Material3.LabelSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@{text}"
+        android:textAllCaps="true"
+        tools:text="@string/placeholder_text" />
+
+</layout>

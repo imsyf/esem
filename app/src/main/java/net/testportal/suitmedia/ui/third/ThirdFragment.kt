@@ -12,6 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import net.testportal.suitmedia.databinding.LayoutEpoxyBinding
+import net.testportal.suitmedia.loading
+import net.testportal.suitmedia.text
 import net.testportal.suitmedia.ui.MainViewModel
 import net.testportal.suitmedia.userCard
 
@@ -21,11 +23,6 @@ class ThirdFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchUsers()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +48,18 @@ class ThirdFragment : Fragment() {
                                     viewModel.setSelected(user.name)
                                     findNavController().popBackStack()
                                 }
+                            }
+                        }
+
+                        if (!state.isLastPage) {
+                            loading {
+                                id("loading/${state.users.size}")
+                                onBind { _, _, _ -> viewModel.fetch() }
+                            }
+                        } else {
+                            text {
+                                id("footer")
+                                text("You've reached the end")
                             }
                         }
                     }

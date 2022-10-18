@@ -12,7 +12,7 @@ object ReqresinApiClient {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
-    const val PER_PAGE = 10
+    const val PER_PAGE = 6
 
     val reqresinApiService: ReqresinApiService by lazy {
         retrofit.create(ReqresinApiService::class.java)
